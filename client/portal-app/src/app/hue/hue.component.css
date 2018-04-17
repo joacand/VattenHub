@@ -1,0 +1,13 @@
+.example-card {
+    max-width: 400px;
+  }
+  
+  .example-header-image {
+    background-image: url('/assets/images/hue.png');
+    background-size: cover;
+  }
+
+  li {
+    list-style-type: none;
+    margin-right: 1em;
+  }
