@@ -2,6 +2,8 @@ package se.joacand.vattenhub.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -21,12 +23,21 @@ import se.joacand.vattenhub.domain.hue.LinkResponse;
 public class HueService implements IHueService {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private RestTemplate restTemplate;
+	private final IConfigRepository configRepository;
+	private final String defaultHueUrl;
+	private final String defaultHueConfigId;
+	private final String defaultHuePassword;
+	private final RestTemplate restTemplate;
 	private String hueRestUrl;
 	private String user;
-	private IConfigRepository configRepository;
 
 	public HueService(IConfigRepository configRepository) {
+		try (AbstractApplicationContext context = new ClassPathXmlApplicationContext("vattenhubConfig.xml")) {
+			defaultHueUrl = (String) context.getBean("defaultHueUrl");
+			defaultHueConfigId = (String) context.getBean("defaultHueConfigId");
+			defaultHuePassword = (String) context.getBean("defaultHuePassword");
+		}
+
 		this.configRepository = configRepository;
 
 		LoadConfigFromRepository();
@@ -38,13 +49,12 @@ public class HueService implements IHueService {
 		Optional<Config> config = configRepository.findById("0");
 
 		if (config.isPresent()) {
-			logger.info("Config found in db!");
+			logger.info("Config found in database");
 			logger.info(config.toString());
 			LoadFromConfig(config.get());
 		} else {
-			logger.info("No config found - adding default configuration!");
-			// TODO: Add default address to configuration file instead of hardcoded
-			Config newConfig = new Config("0", "", "http://192.168.1.3/api/");
+			logger.info("No config found in database - adding default configuration");
+			Config newConfig = new Config(defaultHueConfigId, defaultHuePassword, defaultHueUrl);
 			configRepository.save(newConfig);
 			LoadFromConfig(newConfig);
 		}

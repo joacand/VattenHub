@@ -14,7 +14,7 @@ export class HueComponent implements OnInit {
   statusMessage = '';
   index = 0;
   public form: FormGroup = this.fb.group({
-    checkboxes: this.fb.array([new FormControl(false),new FormControl(false),new FormControl(false)])
+    checkboxes: this.fb.array([new FormControl(false), new FormControl(false), new FormControl(false)])
   });
 
   constructor(private router: Router, private fb: FormBuilder, private hueService: HueService) {
@@ -24,12 +24,12 @@ export class HueComponent implements OnInit {
   }
 
   turnHueOff() {
-    this.hueService.turnHueOff();
+    this.hueService.turnHueOff(3);
     this.statusMessage = 'Hue lights were turned off!';
   }
 
   turnHueOn() {
-    this.hueService.turnHueOn();
+    this.hueService.turnHueOn(3);
     this.statusMessage = 'Hue lights were turned on!';
   }
 

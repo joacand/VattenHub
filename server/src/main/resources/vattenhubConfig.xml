@@ -1,0 +1,9 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<bean id="defaultHueConfigId" class="java.lang.String" factory-method="valueOf"><constructor-arg value="0"/></bean>
+	<bean id="defaultHueUrl" class="java.lang.String" factory-method="valueOf"><constructor-arg value="http://192.168.1.3/api/"/></bean>
+	<bean id="defaultHuePassword" class="java.lang.String" factory-method="valueOf"><constructor-arg value=""/></bean>
+
+</beans>

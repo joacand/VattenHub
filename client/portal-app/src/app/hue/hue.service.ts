@@ -11,13 +11,13 @@ export class HueService {
   constructor(private http: HttpClient) {
   }
 
-  turnHueOn() {
-    let lightOn = { "on": true, "light": 3 };
-    this.http.post(this.url+':8080/hue/api/v1/lights', lightOn, { headers: this.headers }).subscribe(r => { });
+  turnHueOn(light) {
+    let lightOn = { "on": true, "light": light };
+    this.http.post(this.url + ':8080/hue/api/v1/lights', lightOn, { headers: this.headers }).subscribe(r => { });
   }
 
-  turnHueOff() {
-    let lightOff = { "on": false, "light": 3 }
-    this.http.post(this.url+':8080/hue/api/v1/lights', lightOff, { headers: this.headers }).subscribe(r => { });
+  turnHueOff(light) {
+    let lightOff = { "on": false, "light": light }
+    this.http.post(this.url + ':8080/hue/api/v1/lights', lightOff, { headers: this.headers }).subscribe(r => { });
   }
 }
