@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import se.joacand.vattenhub.domain.HueResult;
+import se.joacand.vattenhub.domain.LightInfo;
 import se.joacand.vattenhub.domain.LightState;
 import se.joacand.vattenhub.service.IHueService;
 
@@ -26,6 +27,12 @@ public class HueController {
 	public HueResult lights(@RequestBody LightState input) {
 		boolean res = hueService.changeState(input);
 		return new HueResult(res);
+	}
+
+	@CrossOrigin(origins = "*")
+	@RequestMapping(value = apiver + "lights", method = RequestMethod.GET)
+	public LightInfo lights() {
+		return hueService.getLights();
 	}
 
 	@CrossOrigin(origins = "*")

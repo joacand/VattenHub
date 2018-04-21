@@ -10,8 +10,8 @@
 
         <mat-list-item>
           <li *ngFor='let control of form.get("checkboxes").controls; let i = index'>
-            <input type="checkbox" id={{i}} [formControl]="control">
-            <span>Light {{i}}</span>
+            <mat-checkbox [formControl]="control"></mat-checkbox>
+            <span>Light {{i+1}}</span>
           </li>
           <mat-divider></mat-divider>
         </mat-list-item>

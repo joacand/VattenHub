@@ -13,24 +13,55 @@ import { HueService } from './hue.service';
 export class HueComponent implements OnInit {
   statusMessage = '';
   index = 0;
+  lights: string[];
+
   public form: FormGroup = this.fb.group({
-    checkboxes: this.fb.array([new FormControl(false), new FormControl(false), new FormControl(false)])
+    checkboxes: this.fb.array([])
   });
 
   constructor(private router: Router, private fb: FormBuilder, private hueService: HueService) {
   }
 
   ngOnInit() {
+    this.hueService.getLights().subscribe((data: string[]) => this.lights = data['lights'],
+      error => () => { console.log('Error when getting lights from server', error) },
+      () => {
+        console.log('Successfully got lights: ', this.lights);
+
+        for (let entry of this.lights) {
+          console.log("Found light: ", entry);
+          this.addLight(entry);
+        }
+      }
+    );
   }
 
   turnHueOff() {
-    this.hueService.turnHueOff(3);
-    this.statusMessage = 'Hue lights were turned off!';
+    this.changeHueLight(false);
   }
 
   turnHueOn() {
-    this.hueService.turnHueOn(3);
-    this.statusMessage = 'Hue lights were turned on!';
+    this.changeHueLight(true);
+  }
+
+  changeHueLight(on: boolean) {
+    let cbs = <FormArray>this.form.get('checkboxes');
+    let lightsChanged: string = '';
+
+    for (var _i = 0; _i < cbs.controls.length; _i++) {
+      let cb = cbs.controls[_i];
+      if (cb.value == true) {
+        if (on) {
+          this.hueService.turnHueOn(_i + 1);
+        }
+        else {
+          this.hueService.turnHueOff(_i + 1);
+        }
+        lightsChanged = lightsChanged.concat(' ' + (_i + 1));
+      }
+    }
+
+    this.statusMessage = 'Following Hue lights were changed: ' + lightsChanged;
   }
 
   addLight(id) {
@@ -38,7 +69,7 @@ export class HueComponent implements OnInit {
   }
 
   discoModeHue() {
-    this.statusMessage = 'Disco mode on!';
+    this.statusMessage = 'Disco mode is not yet implemented';
   }
 
 }

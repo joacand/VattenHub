@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HueService } from './hue/hue.service';
 
 import { HttpClient } from '@angular/common/http';
+import { RestConfiguration } from './common/rest.configuration';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { HttpClient } from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [HueService],
+  providers: [HueService, RestConfiguration],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
