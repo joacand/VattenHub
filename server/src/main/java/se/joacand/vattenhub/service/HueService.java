@@ -26,107 +26,107 @@ import se.joacand.vattenhub.domain.hue.LinkResponse;
 @Service
 public class HueService implements IHueService {
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private final IConfigRepository configRepository;
-	private final String defaultHueUrl;
-	private final String defaultHueConfigId;
-	private final String defaultHuePassword;
-	private final RestTemplate restTemplate;
-	private String hueRestUrl;
-	private String user;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final IConfigRepository configRepository;
+    private final String defaultHueUrl;
+    private final String defaultHueConfigId;
+    private final String defaultHuePassword;
+    private final RestTemplate restTemplate;
+    private String hueRestUrl;
+    private String user;
 
-	public HueService(IConfigRepository configRepository) {
-		try (AbstractApplicationContext context = new ClassPathXmlApplicationContext("vattenhubConfig.xml")) {
-			defaultHueUrl = (String) context.getBean("defaultHueUrl");
-			defaultHueConfigId = (String) context.getBean("defaultHueConfigId");
-			defaultHuePassword = (String) context.getBean("defaultHuePassword");
-		}
+    public HueService(IConfigRepository configRepository) {
+        try (AbstractApplicationContext context = new ClassPathXmlApplicationContext("vattenhubConfig.xml")) {
+            defaultHueUrl = (String) context.getBean("defaultHueUrl");
+            defaultHueConfigId = (String) context.getBean("defaultHueConfigId");
+            defaultHuePassword = (String) context.getBean("defaultHuePassword");
+        }
 
-		this.configRepository = configRepository;
+        this.configRepository = configRepository;
 
-		loadConfigFromRepository();
+        loadConfigFromRepository();
 
-		restTemplate = new RestTemplate();
-	}
+        restTemplate = new RestTemplate();
+    }
 
-	private void loadConfigFromRepository() {
-		Optional<Config> config = configRepository.findById("0");
+    private void loadConfigFromRepository() {
+        Optional<Config> config = configRepository.findById("0");
 
-		if (config.isPresent()) {
-			logger.info("Config found in database");
-			logger.info(config.toString());
-			loadFromConfig(config.get());
-		} else {
-			logger.info("No config found in database - adding default configuration");
-			Config newConfig = new Config(defaultHueConfigId, defaultHuePassword, defaultHueUrl);
-			configRepository.save(newConfig);
-			loadFromConfig(newConfig);
-		}
-	}
+        if (config.isPresent()) {
+            logger.info("Config found in database");
+            logger.info(config.toString());
+            loadFromConfig(config.get());
+        } else {
+            logger.info("No config found in database - adding default configuration");
+            Config newConfig = new Config(defaultHueConfigId, defaultHuePassword, defaultHueUrl);
+            configRepository.save(newConfig);
+            loadFromConfig(newConfig);
+        }
+    }
 
-	private void loadFromConfig(Config config) {
-		hueRestUrl = config.bridgeUrl;
-		user = config.hueUser;
-	}
+    private void loadFromConfig(Config config) {
+        hueRestUrl = config.bridgeUrl;
+        user = config.hueUser;
+    }
 
-	@Override
-	public boolean changeState(LightState lightState) {
-		logger.info("changeState called");
+    @Override
+    public boolean changeState(LightState lightState) {
+        logger.info("changeState called");
 
-		String url = hueRestUrl + user + "/lights/" + lightState.getLight() + "/state";
+        String url = hueRestUrl + user + "/lights/" + lightState.getLight() + "/state";
 
-		logger.info("Sending light state change to " + url);
-		restTemplate.put(url, "{\"on\":" + lightState.getOn() + "}");
+        logger.info("Sending light state change to " + url);
+        restTemplate.put(url, "{\"on\":" + lightState.getOn() + "}");
 
-		return true;
-	}
+        return true;
+    }
 
-	// Button needs to be pressed before this is called
-	public boolean registerAccount() {
-		logger.info("registerAccount called");
+    // Button needs to be pressed before this is called
+    public boolean registerAccount() {
+        logger.info("registerAccount called");
 
-		String url = hueRestUrl;
+        String url = hueRestUrl;
 
-		HttpEntity<String> entity = new HttpEntity<String>("{ \"devicetype\": \"vattenhub\" }");
-		ResponseEntity<List<LinkResponse>> lr = restTemplate.exchange(url, HttpMethod.POST, entity,
-				new ParameterizedTypeReference<List<LinkResponse>>() {
-				});
-		List<LinkResponse> result = lr.getBody();
+        HttpEntity<String> entity = new HttpEntity<String>("{ \"devicetype\": \"vattenhub\" }");
+        ResponseEntity<List<LinkResponse>> lr = restTemplate.exchange(url, HttpMethod.POST, entity,
+                new ParameterizedTypeReference<List<LinkResponse>>() {
+                });
+        List<LinkResponse> result = lr.getBody();
 
-		for (LinkResponse authResponse : result) {
+        for (LinkResponse authResponse : result) {
 
-			if (authResponse.getSuccess() != null) {
-				logger.info("Hue register successful");
-				user = authResponse.getSuccess().getUsername();
-				SaveUserToDatabase(user);
-				return true;
-			}
-			logger.info("Error when trying to authenticate to HUE: " + authResponse.getError().getDescription());
-		}
-		logger.error("Hue register failed");
-		return false;
-	}
+            if (authResponse.getSuccess() != null) {
+                logger.info("Hue register successful");
+                user = authResponse.getSuccess().getUsername();
+                SaveUserToDatabase(user);
+                return true;
+            }
+            logger.info("Error when trying to authenticate to HUE: " + authResponse.getError().getDescription());
+        }
+        logger.error("Hue register failed");
+        return false;
+    }
 
-	private void SaveUserToDatabase(String user) {
-		Config newConfig = new Config("0", user, hueRestUrl);
-		configRepository.save(newConfig);
-	}
+    private void SaveUserToDatabase(String user) {
+        Config newConfig = new Config("0", user, hueRestUrl);
+        configRepository.save(newConfig);
+    }
 
-	@Override
-	public LightInfo getLights() {
-		logger.info("getLights called");
+    @Override
+    public LightInfo getLights() {
+        logger.info("getLights called");
 
-		String url = hueRestUrl + user + "/lights";
+        String url = hueRestUrl + user + "/lights";
 
-		ResponseEntity<Map<String, Light>> lightsResponse = restTemplate.exchange(url, HttpMethod.GET, null,
-				new ParameterizedTypeReference<Map<String, Light>>() {
-				});
+        ResponseEntity<Map<String, Light>> lightsResponse = restTemplate.exchange(url, HttpMethod.GET, null,
+                new ParameterizedTypeReference<Map<String, Light>>() {
+                });
 
-		Map<String, Light> lights = lightsResponse.getBody();
+        Map<String, Light> lights = lightsResponse.getBody();
 
-		List<String> lightIds = new ArrayList<>(lights.keySet());
+        List<String> lightIds = new ArrayList<>(lights.keySet());
 
-		return new LightInfo(lightIds);
-	}
+        return new LightInfo(lightIds);
+    }
 
 }

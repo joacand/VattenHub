@@ -5,43 +5,43 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class State {
 
-	private Boolean on;
+    private Boolean on;
 
-	private int bri;
+    private int bri;
 
-	private String alert;
+    private String alert;
 
-	private Boolean reachable;
+    private Boolean reachable;
 
-	public Boolean getOn() {
-		return on;
-	}
+    public Boolean getOn() {
+        return on;
+    }
 
-	public void setOn(Boolean on) {
-		this.on = on;
-	}
+    public void setOn(Boolean on) {
+        this.on = on;
+    }
 
-	public int getBri() {
-		return bri;
-	}
+    public int getBri() {
+        return bri;
+    }
 
-	public void setBri(int bri) {
-		this.bri = bri;
-	}
+    public void setBri(int bri) {
+        this.bri = bri;
+    }
 
-	public String getAlert() {
-		return alert;
-	}
+    public String getAlert() {
+        return alert;
+    }
 
-	public void setAlert(String alert) {
-		this.alert = alert;
-	}
+    public void setAlert(String alert) {
+        this.alert = alert;
+    }
 
-	public Boolean getReachable() {
-		return reachable;
-	}
+    public Boolean getReachable() {
+        return reachable;
+    }
 
-	public void setReachable(Boolean reachable) {
-		this.reachable = reachable;
-	}
+    public void setReachable(Boolean reachable) {
+        this.reachable = reachable;
+    }
 }

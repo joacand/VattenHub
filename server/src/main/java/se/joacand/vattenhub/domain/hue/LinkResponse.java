@@ -5,23 +5,23 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LinkResponse {
 
-	private LinkError error;
+    private LinkError error;
 
-	private LinkSuccess success;
+    private LinkSuccess success;
 
-	public LinkError getError() {
-		return error;
-	}
+    public LinkError getError() {
+        return error;
+    }
 
-	public void setError(LinkError error) {
-		this.error = error;
-	}
+    public void setError(LinkError error) {
+        this.error = error;
+    }
 
-	public LinkSuccess getSuccess() {
-		return success;
-	}
+    public LinkSuccess getSuccess() {
+        return success;
+    }
 
-	public void setSuccess(LinkSuccess success) {
-		this.success = success;
-	}
+    public void setSuccess(LinkSuccess success) {
+        this.success = success;
+    }
 }

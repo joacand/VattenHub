@@ -2,14 +2,14 @@ package se.joacand.vattenhub.domain;
 
 public class HueResult {
 
-	private final boolean successful;
+    private final boolean successful;
 
-	public HueResult(boolean successful) {
-		this.successful = successful;
-	}
+    public HueResult(boolean successful) {
+        this.successful = successful;
+    }
 
-	public boolean getSuccessful() {
-		return successful;
-	}
+    public boolean getSuccessful() {
+        return successful;
+    }
 
 }

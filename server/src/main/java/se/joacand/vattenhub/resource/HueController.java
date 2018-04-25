@@ -15,30 +15,30 @@ import se.joacand.vattenhub.service.IHueService;
 @RequestMapping("hue")
 public class HueController {
 
-	private IHueService hueService;
-	private final String apiver = "/api/v1/";
+    private IHueService hueService;
+    private final String apiver = "/api/v1/";
 
-	public HueController(IHueService hueService) {
-		this.hueService = hueService;
-	}
+    public HueController(IHueService hueService) {
+        this.hueService = hueService;
+    }
 
-	@CrossOrigin(origins = "*")
-	@RequestMapping(value = apiver + "lights", method = RequestMethod.POST)
-	public HueResult lights(@RequestBody LightState input) {
-		boolean res = hueService.changeState(input);
-		return new HueResult(res);
-	}
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = apiver + "lights", method = RequestMethod.POST)
+    public HueResult lights(@RequestBody LightState input) {
+        boolean res = hueService.changeState(input);
+        return new HueResult(res);
+    }
 
-	@CrossOrigin(origins = "*")
-	@RequestMapping(value = apiver + "lights", method = RequestMethod.GET)
-	public LightInfo lights() {
-		return hueService.getLights();
-	}
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = apiver + "lights", method = RequestMethod.GET)
+    public LightInfo lights() {
+        return hueService.getLights();
+    }
 
-	@CrossOrigin(origins = "*")
-	@RequestMapping(value = apiver + "register", method = RequestMethod.POST)
-	public HueResult register() {
-		boolean res = hueService.registerAccount();
-		return new HueResult(res);
-	}
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = apiver + "register", method = RequestMethod.POST)
+    public HueResult register() {
+        boolean res = hueService.registerAccount();
+        return new HueResult(res);
+    }
 }

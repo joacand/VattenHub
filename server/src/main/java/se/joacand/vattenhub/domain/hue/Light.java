@@ -5,73 +5,73 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Light {
 
-	private State state;
+    private State state;
 
-	private String type;
+    private String type;
 
-	private String name;
+    private String name;
 
-	private String modelid;
+    private String modelid;
 
-	private String manufacturername;
+    private String manufacturername;
 
-	private String uniqueid;
+    private String uniqueid;
 
-	private String swversion;
+    private String swversion;
 
-	public State getState() {
-		return state;
-	}
+    public State getState() {
+        return state;
+    }
 
-	public void setState(State state) {
-		this.state = state;
-	}
+    public void setState(State state) {
+        this.state = state;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getModelid() {
-		return modelid;
-	}
+    public String getModelid() {
+        return modelid;
+    }
 
-	public void setModelid(String modelid) {
-		this.modelid = modelid;
-	}
+    public void setModelid(String modelid) {
+        this.modelid = modelid;
+    }
 
-	public String getManufacturername() {
-		return manufacturername;
-	}
+    public String getManufacturername() {
+        return manufacturername;
+    }
 
-	public void setManufacturername(String manufacturername) {
-		this.manufacturername = manufacturername;
-	}
+    public void setManufacturername(String manufacturername) {
+        this.manufacturername = manufacturername;
+    }
 
-	public String getUniqueid() {
-		return uniqueid;
-	}
+    public String getUniqueid() {
+        return uniqueid;
+    }
 
-	public void setUniqueid(String uniqueid) {
-		this.uniqueid = uniqueid;
-	}
+    public void setUniqueid(String uniqueid) {
+        this.uniqueid = uniqueid;
+    }
 
-	public String getSwversion() {
-		return swversion;
-	}
+    public String getSwversion() {
+        return swversion;
+    }
 
-	public void setSwversion(String swversion) {
-		this.swversion = swversion;
-	}
+    public void setSwversion(String swversion) {
+        this.swversion = swversion;
+    }
 }
