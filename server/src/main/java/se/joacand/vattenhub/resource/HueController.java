@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import se.joacand.vattenhub.domain.HueResult;
+import se.joacand.vattenhub.domain.LightAction;
 import se.joacand.vattenhub.domain.LightInfo;
 import se.joacand.vattenhub.domain.LightState;
+import se.joacand.vattenhub.service.IHueActionService;
 import se.joacand.vattenhub.service.IHueService;
 
 @RestController
@@ -17,9 +19,11 @@ public class HueController {
 
     private IHueService hueService;
     private final String apiver = "/api/v1/";
+    private final IHueActionService hueActionService;
 
-    public HueController(IHueService hueService) {
+    public HueController(IHueService hueService, IHueActionService hueActionService) {
         this.hueService = hueService;
+        this.hueActionService = hueActionService;
     }
 
     @CrossOrigin(origins = "*")
@@ -40,5 +44,12 @@ public class HueController {
     public HueResult register() {
         boolean res = hueService.registerAccount();
         return new HueResult(res);
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = apiver + "action", method = RequestMethod.POST)
+    public HueResult action(@RequestBody LightAction input) {
+        HueResult res = hueActionService.startLightAction(input);
+        return res;
     }
 }

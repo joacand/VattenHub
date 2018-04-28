@@ -18,10 +18,12 @@ import java.util.Optional;
 
 import se.joacand.vattenhub.dataaccess.IConfigRepository;
 import se.joacand.vattenhub.domain.Config;
+import se.joacand.vattenhub.domain.HueResult;
 import se.joacand.vattenhub.domain.LightInfo;
 import se.joacand.vattenhub.domain.LightState;
 import se.joacand.vattenhub.domain.hue.Light;
 import se.joacand.vattenhub.domain.hue.LinkResponse;
+import se.joacand.vattenhub.service.HueActions.ILightActionHandler;
 
 @Service
 public class HueService implements IHueService {

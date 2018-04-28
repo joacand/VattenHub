@@ -1,0 +1,12 @@
+package se.joacand.vattenhub.service.HueActions;
+
+/**
+ * This is a base class for specific implemented light actions
+ * 
+ * Derive from this class when creating new actions
+ */
+public interface ILightAction {
+    String getName();
+
+    void execute();
+}

@@ -68,8 +68,9 @@ export class HueComponent implements OnInit {
     (<FormArray>this.form.get('checkboxes')).insert(id, new FormControl(false));
   }
 
-  discoModeHue() {
-    this.statusMessage = 'Disco mode is not yet implemented';
+  discoActionHue() {
+    this.hueService.startAction("DiscoAction");
+    this.statusMessage = 'Disco action started';
   }
 
 }
