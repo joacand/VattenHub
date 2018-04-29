@@ -1,9 +1,12 @@
 package se.joacand.vattenhub.resource;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import se.joacand.vattenhub.domain.HueResult;
@@ -51,5 +54,13 @@ public class HueController {
     public HueResult action(@RequestBody LightAction input) {
         HueResult res = hueActionService.startLightAction(input);
         return res;
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = apiver + "action", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> action() {
+        List<String> actions = hueActionService.getLightActions();
+        return actions;
     }
 }

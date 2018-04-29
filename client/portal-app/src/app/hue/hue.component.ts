@@ -19,6 +19,8 @@ export class HueComponent implements OnInit {
     checkboxes: this.fb.array([])
   });
 
+  public actions: string[];
+
   constructor(private router: Router, private fb: FormBuilder, private hueService: HueService) {
   }
 
@@ -34,6 +36,10 @@ export class HueComponent implements OnInit {
         }
       }
     );
+
+    this.hueService.getActions().subscribe((data: string[]) => this.actions = data,
+      error => () => { console.log('Error when getting actions from server', error) },
+      () => { console.log('Successfully got actions: ', this.actions) });
   }
 
   turnHueOff() {
@@ -68,9 +74,9 @@ export class HueComponent implements OnInit {
     (<FormArray>this.form.get('checkboxes')).insert(id, new FormControl(false));
   }
 
-  discoActionHue() {
-    this.hueService.startAction("DiscoAction");
-    this.statusMessage = 'Disco action started';
+  actionHue(action) {
+    this.hueService.startAction(action);
+    this.statusMessage = 'Started ', action;
   }
 
 }

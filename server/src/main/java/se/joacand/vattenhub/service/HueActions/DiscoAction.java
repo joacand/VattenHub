@@ -35,9 +35,9 @@ public class DiscoAction extends BaseAction implements ILightAction {
 
         for (int i = 0; i < numberOfTimes; i++) {
             try {
-                this.hueService.changeState(lsOn);
-                Thread.sleep(1000);
                 this.hueService.changeState(lsOff);
+                Thread.sleep(1000);
+                this.hueService.changeState(lsOn);
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();

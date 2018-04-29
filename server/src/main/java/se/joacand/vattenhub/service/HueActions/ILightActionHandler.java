@@ -5,7 +5,5 @@ import java.util.List;
 public interface ILightActionHandler {
     List<String> getLightActions();
 
-    void registerLightAction(Class<?> classType) throws Exception;
-
-    void startLightAction(String lightAction);
+    void startLightAction(LightActionEnum lightActionEnum);
 }

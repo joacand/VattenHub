@@ -27,13 +27,18 @@ export class HueService {
   }
 
   getLights(): Observable<string[]> {
-    console.log('Tring to get lights...');
+    console.log('Trying to get lights...');
     return this.http.get<string[]>(this.restLightsUrl, { headers: this.headers });
   }
 
   startAction(action) {
-    console.log('Tring to start action ' + action);
+    console.log('Trying to start action', action);
     let actionObj = { "actionName": action }
     this.http.post(this.restLightActionsUrl, actionObj, { headers: this.headers }).subscribe(r => { });
+  }
+
+  getActions() {
+    console.log('Fetching actions');
+    return this.http.get<string[]>(this.restLightActionsUrl, { headers: this.headers });
   }
 }
