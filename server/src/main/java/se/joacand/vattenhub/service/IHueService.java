@@ -2,7 +2,8 @@ package se.joacand.vattenhub.service;
 
 import se.joacand.vattenhub.domain.LightInfo;
 import se.joacand.vattenhub.domain.LightState;
-import se.joacand.vattenhub.domain.hue.State;
+
+import java.util.HashMap;
 
 public interface IHueService {
     boolean changeState(LightState lightState);
@@ -11,6 +12,6 @@ public interface IHueService {
 
     boolean registerAccount();
 
-    boolean sendRaw(State hueState, int[] lights);
+    boolean sendRaw(HashMap<String, Object> jsonVals, int[] lights);
 
 }

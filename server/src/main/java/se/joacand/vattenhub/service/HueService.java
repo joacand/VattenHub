@@ -1,5 +1,6 @@
 package se.joacand.vattenhub.service;
 
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -16,12 +17,8 @@ import se.joacand.vattenhub.domain.LightInfo;
 import se.joacand.vattenhub.domain.LightState;
 import se.joacand.vattenhub.domain.hue.Light;
 import se.joacand.vattenhub.domain.hue.LinkResponse;
-import se.joacand.vattenhub.domain.hue.State;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class HueService implements IHueService {
@@ -82,15 +79,18 @@ public class HueService implements IHueService {
     }
 
     @Override
-    public boolean sendRaw(State hueState, int[] lights) {
+    public boolean sendRaw(HashMap<String, Object> jsonVals, int[] lights) {
         for (int light : lights) {
             logger.info("sendRaw called for light " + light);
 
             String url = hueRestUrl + user + "/lights/" + light + "/state";
 
+            Gson gson = new Gson();
+            String json = gson.toJson(jsonVals);
+
             logger.info("Sending light state change to " + url);
-            HttpEntity<State> stateEntity = new HttpEntity<>(hueState);
-            restTemplate.put(url, stateEntity);
+            HttpEntity<String> entity = new HttpEntity<>(json);
+            restTemplate.put(url, entity);
         }
 
         return true;
