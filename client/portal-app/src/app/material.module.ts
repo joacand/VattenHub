@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
     imports: [CommonModule,
@@ -15,7 +16,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         MatIconModule,
         MatDividerModule,
         MatListModule,
-        MatCheckboxModule],
+        MatCheckboxModule,
+        MatButtonToggleModule],
     exports: [CommonModule,
         MatToolbarModule,
         MatButtonModule,
@@ -23,6 +25,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         MatIconModule,
         MatDividerModule,
         MatListModule,
-        MatCheckboxModule],
+        MatCheckboxModule,
+        MatButtonToggleModule],
 })
 export class CustomMaterialModule { }

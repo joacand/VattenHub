@@ -6,4 +6,6 @@ public interface ILightActionHandler {
     List<String> getLightActions();
 
     void startLightAction(LightActionEnum lightActionEnum);
+
+    void cancelLightAction(LightActionEnum lightActionEnum);
 }

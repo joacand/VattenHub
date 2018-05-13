@@ -13,4 +13,5 @@ public class NullAction extends BaseAction implements ILightAction {
     public void execute() {
     }
 
+
 }

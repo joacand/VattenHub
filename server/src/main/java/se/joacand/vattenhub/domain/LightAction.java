@@ -13,4 +13,6 @@ public class LightAction {
     public void setActionName(String actionName) {
         this.actionName = actionName;
     }
+
+
 }

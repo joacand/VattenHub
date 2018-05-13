@@ -23,9 +23,11 @@
         <mat-divider></mat-divider>
         <h3>Actions</h3>
         <mat-list-item>
-          <li *ngFor='let action of actions'>
-            <button mat-button (click)="actionHue(action)">{{action}}</button>
-          </li>
+          <mat-button-toggle-group #group="matButtonToggleGroup">
+            <li *ngFor='let action of actions'>
+              <mat-button-toggle (click)="actionHue(action)">{{action}}</mat-button-toggle>
+            </li>
+          </mat-button-toggle-group>
           <mat-divider></mat-divider>
         </mat-list-item>
         <mat-list-item>

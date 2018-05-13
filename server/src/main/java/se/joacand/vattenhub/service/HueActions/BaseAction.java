@@ -22,4 +22,8 @@ public abstract class BaseAction implements ILightAction {
         return name;
     }
 
+    @Override
+    public void cancel() {
+
+    }
 }

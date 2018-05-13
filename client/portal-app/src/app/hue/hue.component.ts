@@ -76,7 +76,7 @@ export class HueComponent implements OnInit {
 
   actionHue(action) {
     this.hueService.startAction(action);
-    this.statusMessage = 'Started ', action;
+    this.statusMessage = 'Started ' + action;
   }
 
 }

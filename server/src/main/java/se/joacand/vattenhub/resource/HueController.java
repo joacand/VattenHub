@@ -1,20 +1,14 @@
 package se.joacand.vattenhub.resource;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import se.joacand.vattenhub.domain.HueResult;
 import se.joacand.vattenhub.domain.LightAction;
 import se.joacand.vattenhub.domain.LightInfo;
 import se.joacand.vattenhub.domain.LightState;
 import se.joacand.vattenhub.service.IHueActionService;
 import se.joacand.vattenhub.service.IHueService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("hue")

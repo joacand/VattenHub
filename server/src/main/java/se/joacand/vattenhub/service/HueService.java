@@ -10,20 +10,18 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import se.joacand.vattenhub.dataaccess.IConfigRepository;
+import se.joacand.vattenhub.domain.Config;
+import se.joacand.vattenhub.domain.LightInfo;
+import se.joacand.vattenhub.domain.LightState;
+import se.joacand.vattenhub.domain.hue.Light;
+import se.joacand.vattenhub.domain.hue.LinkResponse;
+import se.joacand.vattenhub.domain.hue.State;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import se.joacand.vattenhub.dataaccess.IConfigRepository;
-import se.joacand.vattenhub.domain.Config;
-import se.joacand.vattenhub.domain.HueResult;
-import se.joacand.vattenhub.domain.LightInfo;
-import se.joacand.vattenhub.domain.LightState;
-import se.joacand.vattenhub.domain.hue.Light;
-import se.joacand.vattenhub.domain.hue.LinkResponse;
-import se.joacand.vattenhub.service.HueActions.ILightActionHandler;
 
 @Service
 public class HueService implements IHueService {
@@ -79,6 +77,21 @@ public class HueService implements IHueService {
 
         logger.info("Sending light state change to " + url);
         restTemplate.put(url, "{\"on\":" + lightState.getOn() + "}");
+
+        return true;
+    }
+
+    @Override
+    public boolean sendRaw(State hueState, int[] lights) {
+        for (int light : lights) {
+            logger.info("sendRaw called for light " + light);
+
+            String url = hueRestUrl + user + "/lights/" + light + "/state";
+
+            logger.info("Sending light state change to " + url);
+            HttpEntity<State> stateEntity = new HttpEntity<>(hueState);
+            restTemplate.put(url, stateEntity);
+        }
 
         return true;
     }
