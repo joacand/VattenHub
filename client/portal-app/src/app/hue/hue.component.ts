@@ -21,6 +21,8 @@ export class HueComponent implements OnInit {
 
   public actions: string[];
 
+  public presets: string[];
+
   constructor(private router: Router, private fb: FormBuilder, private hueService: HueService) {
   }
 
@@ -40,6 +42,11 @@ export class HueComponent implements OnInit {
     this.hueService.getActions().subscribe((data: string[]) => this.actions = data,
       error => () => { console.log('Error when getting actions from server', error) },
       () => { console.log('Successfully got actions: ', this.actions) });
+
+    this.hueService.getPresets().subscribe((data: string[]) => this.presets = data.map(p => p['name']),
+      error => () => { console.log('Error when getting presets from server', error) },
+      () => { console.log('Successfully got presets: ', this.presets); });
+
   }
 
   turnHueOff() {
@@ -77,6 +84,11 @@ export class HueComponent implements OnInit {
   actionHue(action) {
     this.hueService.startAction(action);
     this.statusMessage = 'Started ' + action;
+  }
+
+  presetHue(preset) {
+    this.hueService.startPreset(preset);
+    this.statusMessage = 'Started ' + preset;
   }
 
 }

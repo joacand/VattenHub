@@ -30,6 +30,15 @@
           </mat-button-toggle-group>
           <mat-divider></mat-divider>
         </mat-list-item>
+        <h3>Presets</h3>
+        <mat-list-item>
+          <mat-button-toggle-group #group="matButtonToggleGroup">
+            <li *ngFor='let preset of presets'>
+              <mat-button-toggle (click)="presetHue(preset)">{{preset}}</mat-button-toggle>
+            </li>
+          </mat-button-toggle-group>
+          <mat-divider></mat-divider>
+        </mat-list-item>
         <mat-list-item>
           <br/>
           <br/>

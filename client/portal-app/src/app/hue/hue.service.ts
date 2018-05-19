@@ -10,10 +10,12 @@ export class HueService {
 
   private restLightsUrl: string;
   private restLightActionsUrl: string;
+  private restLightPresetsUrl: string;
 
   constructor(private http: HttpClient, private restConfiguration: RestConfiguration) {
     this.restLightsUrl = this.restConfiguration.ServerWithHueApiUrl + 'lights';
     this.restLightActionsUrl = this.restConfiguration.ServerWithHueApiUrl + 'action';
+    this.restLightPresetsUrl = this.restConfiguration.ServerWithHueApiUrl + 'preset';
   }
 
   turnHueOn(light) {
@@ -40,5 +42,15 @@ export class HueService {
   getActions() {
     console.log('Fetching actions');
     return this.http.get<string[]>(this.restLightActionsUrl, { headers: this.headers });
+  }
+
+  getPresets(): Observable<string[]> {
+    console.log('Fetching presets');
+    return this.http.get<string[]>(this.restLightPresetsUrl, { headers: this.headers });
+  }
+
+  startPreset(preset) {
+    console.log('Trying to start preset', preset);
+    this.http.post(this.restLightPresetsUrl, preset, { headers: this.headers }).subscribe(r => { });
   }
 }

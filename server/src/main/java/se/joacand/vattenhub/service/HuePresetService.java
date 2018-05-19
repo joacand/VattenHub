@@ -3,14 +3,18 @@ package se.joacand.vattenhub.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Service;
 import se.joacand.vattenhub.domain.HueResult;
 import se.joacand.vattenhub.domain.hue.HueOption;
 import se.joacand.vattenhub.domain.hue.HuePreset;
 
-import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,22 +29,23 @@ public class HuePresetService implements IHuePresetService {
     public HuePresetService(IHueService hueService) {
         this.hueService = hueService;
 
-        File folder = null;
+        List<InputStream> inputStreams = new ArrayList<>();
         try {
-            URI uri = this.getClass().getResource("/HuePresets").toURI();
-            folder = new File(uri);
-        } catch (URISyntaxException | NullPointerException e) {
-            logger.error("Error trying to find hue preset directory");
-        }
-
-        if (!folder.isDirectory()) {
-            logger.error("Could not find hue presets directory or it is not a directory");
+            ClassLoader cl = this.getClass().getClassLoader();
+            ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(cl);
+            Resource[] resources = resolver.getResources("classpath*:HuePresets/*.json");
+            for (Resource resource : resources) {
+                inputStreams.add(resource.getInputStream());
+            }
+        } catch (IOException | NullPointerException e) {
+            logger.error("Error trying to find hue presets");
+            CleanUpInputStreams(inputStreams);
             return;
         }
 
-        for (final File file : folder.listFiles()) {
+        for (final InputStream inputStream : inputStreams) {
             try {
-                String json = readFileIntoString(file);
+                String json = readFileIntoString(inputStream);
                 logger.info(json);
                 HuePreset preset = new ObjectMapper().readValue(json, HuePreset.class);
                 logger.info("Found preset: " + preset.getName() + " description: " + preset.getDescription());
@@ -50,12 +55,24 @@ public class HuePresetService implements IHuePresetService {
             }
         }
 
-        startHuePreset("EverythingOff");
+        CleanUpInputStreams(inputStreams);
+        logger.info("Presets loaded: " + Integer.toString(presets.size()));
     }
 
-    private String readFileIntoString(File file) throws IOException {
-        InputStream inputStream = new FileInputStream(file);
+    private void CleanUpInputStreams(List<InputStream> inputStreams) {
+        logger.info("Cleaning up input streams");
+        for (int i = 0; i < inputStreams.size(); i++) {
+            InputStream is = inputStreams.get(i);
+            try {
+                is.close();
+                inputStreams.remove(i);
+            } catch (IOException e) {
+                logger.error("Exception when closing input stream: " + e);
+            }
+        }
+    }
 
+    private String readFileIntoString(InputStream inputStream) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
         String line;
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));

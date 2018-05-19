@@ -63,16 +63,16 @@ public class HueController {
     }
 
     @CrossOrigin(origins = "*")
-    @RequestMapping(value = apiver + "presets", method = RequestMethod.GET)
+    @RequestMapping(value = apiver + "preset", method = RequestMethod.GET)
     @ResponseBody
-    public List<HuePreset> presets() {
+    public List<HuePreset> preset() {
         List<HuePreset> presets = huePresetService.getHuePresets();
         return presets;
     }
 
     @CrossOrigin(origins = "*")
-    @RequestMapping(value = apiver + "presets", method = RequestMethod.POST)
-    public HueResult action(@RequestBody String presetName) {
+    @RequestMapping(value = apiver + "preset", method = RequestMethod.POST)
+    public HueResult preset(@RequestBody String presetName) {
         HueResult res = huePresetService.startHuePreset(presetName);
         return res;
     }
