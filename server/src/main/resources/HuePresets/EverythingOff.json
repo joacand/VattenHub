@@ -1,0 +1,15 @@
+{
+  "name": "EverythingOff",
+  "description": "Turns off every light",
+  "hueOptions": [
+    {
+      "key": "on",
+      "value": false
+    }
+  ],
+  "lights": [
+    1,
+    2,
+    3
+  ]
+}

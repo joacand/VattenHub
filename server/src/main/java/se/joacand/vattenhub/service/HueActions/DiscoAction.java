@@ -50,11 +50,9 @@ public class DiscoAction extends BaseAction implements ILightAction {
         int timeBetween = 500;
         int transitionTime = 5;
         int bri = 254;
-        int sat = 254;
 
         HashMap<String, Object> jsonVals = new HashMap<>();
         jsonVals.put("bri", bri);
-        jsonVals.put("sat", sat);
         jsonVals.put("transitiontime", transitionTime);
 
         // TODO: Remove hardcoded light 3
@@ -63,7 +61,9 @@ public class DiscoAction extends BaseAction implements ILightAction {
         while (active) {
             try {
                 int hue = rand.nextInt(65535);
+                int sat = rand.nextInt(254);
                 jsonVals.put("hue", hue);
+                jsonVals.put("sat", sat);
                 logger.info("Setting hue to " + hue);
                 this.hueService.sendRaw(jsonVals, lights);
                 Thread.sleep(timeBetween);

@@ -1,0 +1,19 @@
+{
+  "name": "Bedtime",
+  "description": "Dims the lights in preperation for bedtime",
+  "hueOptions": [
+    {
+      "key": "on",
+      "value": true
+    },
+    {
+      "key": "bri",
+      "value": 75
+    }
+  ],
+  "lights": [
+    1,
+    2,
+    3
+  ]
+}

@@ -5,7 +5,9 @@ import se.joacand.vattenhub.domain.HueResult;
 import se.joacand.vattenhub.domain.LightAction;
 import se.joacand.vattenhub.domain.LightInfo;
 import se.joacand.vattenhub.domain.LightState;
+import se.joacand.vattenhub.domain.hue.HuePreset;
 import se.joacand.vattenhub.service.IHueActionService;
+import se.joacand.vattenhub.service.IHuePresetService;
 import se.joacand.vattenhub.service.IHueService;
 
 import java.util.List;
@@ -17,10 +19,12 @@ public class HueController {
     private IHueService hueService;
     private final String apiver = "/api/v1/";
     private final IHueActionService hueActionService;
+    private final IHuePresetService huePresetService;
 
-    public HueController(IHueService hueService, IHueActionService hueActionService) {
+    public HueController(IHueService hueService, IHueActionService hueActionService, IHuePresetService huePresetService) {
         this.hueService = hueService;
         this.hueActionService = hueActionService;
+        this.huePresetService = huePresetService;
     }
 
     @CrossOrigin(origins = "*")
@@ -56,5 +60,20 @@ public class HueController {
     public List<String> action() {
         List<String> actions = hueActionService.getLightActions();
         return actions;
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = apiver + "presets", method = RequestMethod.GET)
+    @ResponseBody
+    public List<HuePreset> presets() {
+        List<HuePreset> presets = huePresetService.getHuePresets();
+        return presets;
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = apiver + "presets", method = RequestMethod.POST)
+    public HueResult action(@RequestBody String presetName) {
+        HueResult res = huePresetService.startHuePreset(presetName);
+        return res;
     }
 }
