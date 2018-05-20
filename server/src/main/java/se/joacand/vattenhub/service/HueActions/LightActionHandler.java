@@ -29,11 +29,11 @@ public class LightActionHandler implements ILightActionHandler {
     }
 
     @Override
-    public void startLightAction(LightActionEnum lightActionEnum) {
+    public void startLightAction(LightActionEnum lightActionEnum, int[] lights) {
         cancelLightAction(lastStartedAction);
 
         ILightAction lightAction = lightActionFactory.GetAction(lightActionEnum);
-        lightAction.execute();
+        lightAction.execute(lights);
         lastStartedAction = lightActionEnum;
     }
 

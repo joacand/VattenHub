@@ -10,7 +10,7 @@ public class NullAction extends BaseAction implements ILightAction {
     }
 
     @Override
-    public void execute() {
+    public void execute(int[] lights) {
     }
 
 

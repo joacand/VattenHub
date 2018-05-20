@@ -22,14 +22,18 @@ public class TimeAction extends BaseAction implements ILightAction {
     }
 
     @Override
-    public void execute() {
+    public void execute(int[] lights) {
+        if (lights.length == 0) {
+            logger.info("No lights specified, returning from Time action");
+            return;
+        }
         logger.info("Executing time action");
         active = true;
 
         ExecutorService executor = Executors.newFixedThreadPool(1);
 
         Future<Void> future = executor.submit(() -> {
-            startTask();
+            startTask(lights);
             return null;
         });
     }
@@ -40,29 +44,26 @@ public class TimeAction extends BaseAction implements ILightAction {
         active = false;
     }
 
-    public void startTask() {
+    public void startTask(int[] lights) {
         logger.info("Starting task for time action");
 
-        // TODO: Remove hardcoding of these times
-        int timeBetween = 1000;
-        int transitionTime = 10;
-
-        int bri = 254;
-        int sat = 254;
+        // TODO: Move hardcoding of these times to configuration file or take as input
+        final int timeBetween = 1000;
+        final int transitionTime = 10;
+        final int bri = 254;
 
         HashMap<String, Object> jsonVals = new HashMap<>();
         jsonVals.put("bri", bri);
-        jsonVals.put("sat", sat);
         jsonVals.put("transitiontime", transitionTime);
 
-        // TODO: Remove hardcoded light 3
-        int[] lights = new int[]{3};
         logger.info("Starting while loop");
 
         while (active) {
             try {
                 int hue = calculateHueFromTime();
+                int sat = calculateHueFromTime();
                 jsonVals.put("hue", hue);
+                jsonVals.put("sat", sat);
                 logger.info("Setting hue: " + hue);
                 this.hueService.sendRaw(jsonVals, lights);
                 Thread.sleep(timeBetween);

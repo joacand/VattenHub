@@ -3,6 +3,8 @@ package se.joacand.vattenhub.domain;
 public class LightAction {
     private String actionName;
 
+    private int[] lights;
+
     public LightAction() {
     }
 
@@ -15,4 +17,11 @@ public class LightAction {
     }
 
 
+    public int[] getLights() {
+        return lights;
+    }
+
+    public void setLights(int[] lights) {
+        this.lights = lights;
+    }
 }

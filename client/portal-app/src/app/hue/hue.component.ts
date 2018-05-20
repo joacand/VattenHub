@@ -57,24 +57,46 @@ export class HueComponent implements OnInit {
     this.changeHueLight(true);
   }
 
+  hueSliderChanged(change) {
+    let value = change.value;
+    console.log("Setting light brightness to " + value)
+    this.changeLightBri(value);
+  }
+
+  changeLightBri(value) {
+    let lights = this.getLights();
+    this.hueService.setHueBri(value, lights);
+  }
+
   changeHueLight(on: boolean) {
     let cbs = <FormArray>this.form.get('checkboxes');
     let lightsChanged: string = '';
 
-    for (var _i = 0; _i < cbs.controls.length; _i++) {
-      let cb = cbs.controls[_i];
-      if (cb.value == true) {
-        if (on) {
-          this.hueService.turnHueOn(_i + 1);
-        }
-        else {
-          this.hueService.turnHueOff(_i + 1);
-        }
-        lightsChanged = lightsChanged.concat(' ' + (_i + 1));
-      }
+    let lights = this.getLights();
+
+    if (on) {
+      this.hueService.turnHueOn(lights);
+    }
+    else {
+      this.hueService.turnHueOff(lights);
     }
 
     this.statusMessage = 'Following Hue lights were changed: ' + lightsChanged;
+  }
+
+  getLights(): number[] {
+    let cbs = <FormArray>this.form.get('checkboxes');
+    let lights: number[] = [];
+
+    for (var _i = 0; _i < cbs.controls.length; _i++) {
+      let cb = cbs.controls[_i];
+      if (cb.value == true) {
+        lights.push(_i + 1);
+      }
+    }
+
+    this.statusMessage = 'Following Hue lights were calculated: ' + lights;
+    return lights;
   }
 
   addLight(id) {
@@ -82,7 +104,8 @@ export class HueComponent implements OnInit {
   }
 
   actionHue(action) {
-    this.hueService.startAction(action);
+    let lights = this.getLights();
+    this.hueService.startAction(action, lights);
     this.statusMessage = 'Started ' + action;
   }
 

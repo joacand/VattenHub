@@ -18,14 +18,19 @@ export class HueService {
     this.restLightPresetsUrl = this.restConfiguration.ServerWithHueApiUrl + 'preset';
   }
 
-  turnHueOn(light) {
-    let lightOn = { "on": true, "light": light };
+  turnHueOn(lights) {
+    let lightOn = { "on": true, "lights": lights, "bri": 100  };
     this.http.post(this.restLightsUrl, lightOn, { headers: this.headers }).subscribe(r => { });
   }
 
-  turnHueOff(light) {
-    let lightOff = { "on": false, "light": light }
+  turnHueOff(lights) {
+    let lightOff = { "on": false, "lights": lights }
     this.http.post(this.restLightsUrl, lightOff, { headers: this.headers }).subscribe(r => { });
+  }
+
+  setHueBri(brightness, lights) {
+    let briRequest = { "on": true, "lights": lights, "bri": brightness }
+    this.http.post(this.restLightsUrl, briRequest, { headers: this.headers }).subscribe(r => { });
   }
 
   getLights(): Observable<string[]> {
@@ -33,9 +38,9 @@ export class HueService {
     return this.http.get<string[]>(this.restLightsUrl, { headers: this.headers });
   }
 
-  startAction(action) {
+  startAction(action, lights) {
     console.log('Trying to start action', action);
-    let actionObj = { "actionName": action }
+    let actionObj = { "actionName": action, "lights": lights }
     this.http.post(this.restLightActionsUrl, actionObj, { headers: this.headers }).subscribe(r => { });
   }
 

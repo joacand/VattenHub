@@ -1,6 +1,6 @@
 {
-  "name": "LivingRoomFull",
-  "description": "Turns on living room lights at full brightness",
+  "name": "LivingRoomStandard",
+  "description": "Turns on living room lights at a default white light",
   "hueOptions": [
     {
       "key": "on",
@@ -9,6 +9,10 @@
     {
       "key": "bri",
       "value": 254
+    },
+    {
+      "key": "ct",
+      "value": 346
     }
   ],
   "lights": [

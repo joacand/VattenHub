@@ -70,11 +70,14 @@ public class HueService implements IHueService {
     public boolean changeState(LightState lightState) {
         logger.info("changeState called");
 
-        String url = hueRestUrl + user + "/lights/" + lightState.getLight() + "/state";
+        int[] lights = lightState.getLights();
 
-        logger.info("Sending light state change to " + url);
-        restTemplate.put(url, "{\"on\":" + lightState.getOn() + "}");
-
+        for (int light : lights) {
+            String url = hueRestUrl + user + "/lights/" + light + "/state";
+            logger.info("Sending light state change to " + url);
+            String request = "{\"on\":" + lightState.getOn() + ",\"bri\":" + lightState.getBri() + "}";
+            restTemplate.put(url, request);
+        }
         return true;
     }
 

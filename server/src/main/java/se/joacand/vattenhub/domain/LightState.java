@@ -1,8 +1,12 @@
 package se.joacand.vattenhub.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LightState {
     private boolean on;
-    private int light;
+    private int[] lights;
+    private int bri;
 
     public LightState() {
     }
@@ -15,11 +19,19 @@ public class LightState {
         this.on = on;
     }
 
-    public int getLight() {
-        return light;
+    public int[] getLights() {
+        return lights;
     }
 
-    public void setLight(int light) {
-        this.light = light;
+    public void setLights(int[] lights) {
+        this.lights = lights;
+    }
+
+    public int getBri() {
+        return bri;
+    }
+
+    public void setBri(int bri) {
+        this.bri = bri;
     }
 }

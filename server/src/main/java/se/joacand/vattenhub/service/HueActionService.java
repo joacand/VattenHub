@@ -28,7 +28,9 @@ public class HueActionService implements IHueActionService {
     @Override
     public HueResult startLightAction(LightAction lightActionObj) {
         logger.info("Starting action " + lightActionObj.getActionName());
-        lightActionHandler.startLightAction(LightActionEnum.valueOf(lightActionObj.getActionName()));
+        lightActionHandler.startLightAction(
+                LightActionEnum.valueOf(lightActionObj.getActionName()),
+                lightActionObj.getLights());
         return new HueResult(true);
     }
 

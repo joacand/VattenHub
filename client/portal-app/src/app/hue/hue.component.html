@@ -19,24 +19,21 @@
         <mat-list-item>
           <button mat-button (click)="turnHueOn()">Turn on</button>
           <button mat-button (click)="turnHueOff()">Turn off</button>
+          <mat-slider (change)="hueSliderChanged($event)" ></mat-slider>
         </mat-list-item>
         <mat-divider></mat-divider>
         <h3>Actions</h3>
         <mat-list-item>
-          <mat-button-toggle-group #group="matButtonToggleGroup">
-            <li *ngFor='let action of actions'>
-              <mat-button-toggle (click)="actionHue(action)">{{action}}</mat-button-toggle>
-            </li>
-          </mat-button-toggle-group>
+          <li *ngFor='let action of actions'>
+            <button mat-button (click)="actionHue(action)">{{action}}</button>
+          </li>
           <mat-divider></mat-divider>
         </mat-list-item>
         <h3>Presets</h3>
         <mat-list-item>
-          <mat-button-toggle-group #group="matButtonToggleGroup">
-            <li *ngFor='let preset of presets'>
-              <mat-button-toggle (click)="presetHue(preset)">{{preset}}</mat-button-toggle>
-            </li>
-          </mat-button-toggle-group>
+          <li *ngFor='let preset of presets'>
+            <button mat-button (click)="presetHue(preset)">{{preset}}</button>
+          </li>
           <mat-divider></mat-divider>
         </mat-list-item>
         <mat-list-item>

@@ -7,6 +7,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSliderModule } from '@angular/material/slider';
 
 @NgModule({
     imports: [CommonModule,
@@ -17,7 +19,9 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
         MatDividerModule,
         MatListModule,
         MatCheckboxModule,
-        MatButtonToggleModule],
+        MatButtonToggleModule,
+        MatGridListModule,
+        MatSliderModule],
     exports: [CommonModule,
         MatToolbarModule,
         MatButtonModule,
@@ -26,6 +30,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
         MatDividerModule,
         MatListModule,
         MatCheckboxModule,
-        MatButtonToggleModule],
+        MatButtonToggleModule,
+        MatGridListModule,
+        MatSliderModule],
 })
 export class CustomMaterialModule { }

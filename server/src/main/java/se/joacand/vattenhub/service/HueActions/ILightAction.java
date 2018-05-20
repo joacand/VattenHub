@@ -8,7 +8,7 @@ package se.joacand.vattenhub.service.HueActions;
 public interface ILightAction {
     String getName();
 
-    void execute();
+    void execute(int[] lights);
 
     void cancel();
 }

@@ -25,14 +25,18 @@ public class DiscoAction extends BaseAction implements ILightAction {
     }
 
     @Override
-    public void execute() {
-        logger.info("Executing disco mode");
+    public void execute(int[] lights) {
+        if (lights.length == 0) {
+            logger.info("No lights specified, returning from Disco action");
+            return;
+        }
+        logger.info("Executing disco mode for lights " + lights.toString());
         active = true;
 
         ExecutorService executor = Executors.newFixedThreadPool(1);
 
         Future<Void> future = executor.submit(() -> {
-            startTask();
+            startTask(lights);
             return null;
         });
     }
@@ -43,29 +47,29 @@ public class DiscoAction extends BaseAction implements ILightAction {
         active = false;
     }
 
-    public void startTask() {
-        logger.info("Starting task for disco mode");
+    public void startTask(int[] lights) {
+        logger.info("Starting task for disco mode for lights " + Integer.toString(lights.length));
 
-        // TODO: Remove hardcoding of these times
-        int timeBetween = 500;
-        int transitionTime = 5;
-        int bri = 254;
+        // TODO: Move hardcoding of these times to configuration file or take as input
+        final int timeBetween = 300;
+        final int transitionTime = 2;
+        final int bri = 254;
 
         HashMap<String, Object> jsonVals = new HashMap<>();
         jsonVals.put("bri", bri);
         jsonVals.put("transitiontime", transitionTime);
 
-        // TODO: Remove hardcoded light 3
-        int[] lights = new int[]{3};
-
         while (active) {
-            try {
+            // Send a random color for each light - lights should not share colors
+            for (int light : lights) {
                 int hue = rand.nextInt(65535);
                 int sat = rand.nextInt(254);
                 jsonVals.put("hue", hue);
                 jsonVals.put("sat", sat);
                 logger.info("Setting hue to " + hue);
-                this.hueService.sendRaw(jsonVals, lights);
+                this.hueService.sendRaw(jsonVals, new int[]{light});
+            }
+            try {
                 Thread.sleep(timeBetween);
             } catch (InterruptedException e) {
                 e.printStackTrace();

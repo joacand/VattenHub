@@ -9,6 +9,10 @@
     {
       "key": "bri",
       "value": 75
+    },
+    {
+      "key": "ct",
+      "value": 346
     }
   ],
   "lights": [

@@ -5,7 +5,7 @@ import java.util.List;
 public interface ILightActionHandler {
     List<String> getLightActions();
 
-    void startLightAction(LightActionEnum lightActionEnum);
+    void startLightAction(LightActionEnum lightActionEnum, int[] lights);
 
     void cancelLightAction(LightActionEnum lightActionEnum);
 }
