@@ -53,6 +53,10 @@ export class HueComponent implements OnInit {
     this.changeHueLight(false);
   }
 
+  register() {
+        this.hueService.register();
+  }
+
   turnHueOn() {
     this.changeHueLight(true);
   }

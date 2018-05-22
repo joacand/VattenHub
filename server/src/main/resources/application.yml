@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: vattenhub
+
+---
+
+spring:
+  profiles: production
+  application:
+    name: vattenhub
+  data:
+    mongodb.host: mongo
+    mongodb.port: 27017
+
+---
+
+spring:
+  profiles: development
+  application:
+    name: vattenhub

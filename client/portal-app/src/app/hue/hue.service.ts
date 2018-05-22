@@ -8,11 +8,13 @@ export class HueService {
 
   private headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
 
+  private restRegisterUrl: string;
   private restLightsUrl: string;
   private restLightActionsUrl: string;
   private restLightPresetsUrl: string;
 
   constructor(private http: HttpClient, private restConfiguration: RestConfiguration) {
+    this.restRegisterUrl = this.restConfiguration.ServerWithHueApiUrl + 'register';
     this.restLightsUrl = this.restConfiguration.ServerWithHueApiUrl + 'lights';
     this.restLightActionsUrl = this.restConfiguration.ServerWithHueApiUrl + 'action';
     this.restLightPresetsUrl = this.restConfiguration.ServerWithHueApiUrl + 'preset';
@@ -31,6 +33,12 @@ export class HueService {
   setHueBri(brightness, lights) {
     let briRequest = { "on": true, "lights": lights, "bri": brightness }
     this.http.post(this.restLightsUrl, briRequest, { headers: this.headers }).subscribe(r => { });
+  }
+
+  register() {
+    console.log('Trying to register');
+    this.http.post(this.restRegisterUrl, { headers: this.headers }).subscribe(r => { });
+
   }
 
   getLights(): Observable<string[]> {
