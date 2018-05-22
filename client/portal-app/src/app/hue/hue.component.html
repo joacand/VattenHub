@@ -19,7 +19,7 @@
         <mat-list-item>
           <button mat-button (click)="turnHueOn()">Turn on</button>
           <button mat-button (click)="turnHueOff()">Turn off</button>
-          <mat-slider (change)="hueSliderChanged($event)" ></mat-slider>
+          <mat-slider max=254 (change)="hueSliderChanged($event)" ></mat-slider>
         </mat-list-item>
         <mat-divider></mat-divider>
         <h3>Actions</h3>
