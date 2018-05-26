@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class LightActionFactory implements ILightActionFactory {
 
     private final IHueService hueService;
-    private HashMap<LightActionEnum, ILightAction> startedActions = new HashMap<>();
+    private final HashMap<LightActionEnum, ILightAction> startedActions = new HashMap<>();
 
     private LightActionFactory(IHueService hueService) {
         this.hueService = hueService;

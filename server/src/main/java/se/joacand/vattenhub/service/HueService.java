@@ -108,7 +108,7 @@ public class HueService implements IHueService {
 
         String url = hueRestUrl;
 
-        HttpEntity<String> entity = new HttpEntity<String>("{ \"devicetype\": \"vattenhub\" }");
+        HttpEntity<String> entity = new HttpEntity<>("{ \"devicetype\": \"vattenhub\" }");
         ResponseEntity<List<LinkResponse>> lr = restTemplate.exchange(url, HttpMethod.POST, entity,
                 new ParameterizedTypeReference<List<LinkResponse>>() {
                 });

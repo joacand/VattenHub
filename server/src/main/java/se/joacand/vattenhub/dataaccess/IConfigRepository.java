@@ -6,5 +6,5 @@ import se.joacand.vattenhub.domain.Config;
 import java.util.Optional;
 
 public interface IConfigRepository extends MongoRepository<Config, String> {
-    public Optional<Config> findById(String id);
+    Optional<Config> findById(String id);
 }

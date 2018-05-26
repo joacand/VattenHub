@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,7 +23,7 @@ import java.util.List;
 public class HuePresetService implements IHuePresetService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final IHueService hueService;
-    private List<HuePreset> presets = new ArrayList<>();
+    private final List<HuePreset> presets = new ArrayList<>();
 
     public HuePresetService(IHueService hueService) {
         this.hueService = hueService;
@@ -104,14 +103,12 @@ public class HuePresetService implements IHuePresetService {
     private void startPreset(HuePreset preset) {
         logger.info(preset.getName() + " " + preset.getDescription());
 
-        HueOption[] optionsArr = preset.getHueOptions();
+        HueOption[] options = preset.getHueOptions();
         int[] lights = preset.getLights();
-        if (optionsArr == null || lights == null) {
+        if (options == null || lights == null) {
             logger.error("Null objects in hueoptions");
             return;
         }
-
-        List<HueOption> options = Arrays.asList(optionsArr);
 
         HashMap<String, Object> jsonVals = new HashMap<>();
         for (HueOption option : options) {

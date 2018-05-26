@@ -46,7 +46,7 @@ public class TimeAction extends BaseAction implements ILightAction {
         active = false;
     }
 
-    public void startTask(int[] lights) {
+    private void startTask(int[] lights) {
         logger.info("Starting task for time action");
 
         // TODO: Move hardcoding of these times to configuration file or take as input
@@ -82,8 +82,7 @@ public class TimeAction extends BaseAction implements ILightAction {
         String timeStr = String.valueOf(System.currentTimeMillis());
         int lastSix = Integer.parseInt(timeStr.substring(timeStr.length() - 5));
         double percentage = lastSix / 99999.0;
-        int hue = (int) Math.round(percentage * 65535);
-        return hue;
+        return (int) Math.round(percentage * 65535);
     }
 
 }

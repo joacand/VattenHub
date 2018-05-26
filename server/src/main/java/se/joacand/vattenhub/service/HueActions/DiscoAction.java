@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import se.joacand.vattenhub.service.HueApiException;
 import se.joacand.vattenhub.service.IHueService;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -18,7 +19,7 @@ import java.util.concurrent.Future;
 public class DiscoAction extends BaseAction implements ILightAction {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private Random rand = new Random();
+    private final Random rand = new Random();
     private boolean active = false;
 
     public DiscoAction(IHueService hueService) {
@@ -31,7 +32,7 @@ public class DiscoAction extends BaseAction implements ILightAction {
             logger.info("No lights specified, returning from Disco action");
             return;
         }
-        logger.info("Executing disco mode for lights " + lights.toString());
+        logger.info("Executing disco mode for lights " + Arrays.toString(lights));
         active = true;
 
         ExecutorService executor = Executors.newFixedThreadPool(1);
@@ -48,7 +49,7 @@ public class DiscoAction extends BaseAction implements ILightAction {
         active = false;
     }
 
-    public void startTask(int[] lights) {
+    private void startTask(int[] lights) {
         logger.info("Starting task for disco mode for lights " + Integer.toString(lights.length));
 
         // TODO: Move hardcoding of these times to configuration file or take as input

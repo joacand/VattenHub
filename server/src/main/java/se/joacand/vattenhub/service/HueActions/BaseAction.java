@@ -4,10 +4,10 @@ import se.joacand.vattenhub.service.IHueService;
 
 public abstract class BaseAction implements ILightAction {
 
-    private String name;
-    protected IHueService hueService;
+    private final String name;
+    final IHueService hueService;
 
-    public BaseAction(String name, IHueService hueService) {
+    BaseAction(String name, IHueService hueService) {
         this.name = name;
         this.hueService = hueService;
     }

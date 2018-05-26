@@ -21,7 +21,7 @@ import java.util.List;
 public class HueController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private IHueService hueService;
+    private final IHueService hueService;
     private final String apiver = "/api/v1/";
     private final IHueActionService hueActionService;
     private final IHuePresetService huePresetService;
@@ -65,30 +65,26 @@ public class HueController {
     @CrossOrigin(origins = "*")
     @RequestMapping(value = apiver + "action", method = RequestMethod.POST)
     public HueResult action(@RequestBody LightAction input) {
-        HueResult res = hueActionService.startLightAction(input);
-        return res;
+        return hueActionService.startLightAction(input);
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = apiver + "action", method = RequestMethod.GET)
     @ResponseBody
     public List<String> action() {
-        List<String> actions = hueActionService.getLightActions();
-        return actions;
+        return hueActionService.getLightActions();
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = apiver + "preset", method = RequestMethod.GET)
     @ResponseBody
     public List<HuePreset> preset() {
-        List<HuePreset> presets = huePresetService.getHuePresets();
-        return presets;
+        return huePresetService.getHuePresets();
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = apiver + "preset", method = RequestMethod.POST)
     public HueResult preset(@RequestBody String presetName) {
-        HueResult res = huePresetService.startHuePreset(presetName);
-        return res;
+        return huePresetService.startHuePreset(presetName);
     }
 }
