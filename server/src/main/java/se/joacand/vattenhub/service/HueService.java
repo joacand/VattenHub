@@ -141,7 +141,7 @@ public class HueService implements IHueService {
         String url = hueRestUrl + user + "/lights";
 
         ResponseEntity<Map<String, Light>> lightsResponse = restTemplate.exchange(url, HttpMethod.GET, null,
-                new ParameterizedTypeReference<>() {
+                new ParameterizedTypeReference<Map<String, Light>>() {
                 });
 
         Map<String, Light> lights = lightsResponse.getBody();

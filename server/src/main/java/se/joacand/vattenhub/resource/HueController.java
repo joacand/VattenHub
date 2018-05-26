@@ -1,5 +1,7 @@
 package se.joacand.vattenhub.resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import se.joacand.vattenhub.domain.HueResult;
 import se.joacand.vattenhub.domain.LightAction;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequestMapping("hue")
 public class HueController {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private IHueService hueService;
     private final String apiver = "/api/v1/";
     private final IHueActionService hueActionService;
@@ -36,7 +39,7 @@ public class HueController {
         try {
             res = hueService.changeState(input);
         } catch (HueApiException e) {
-            e.printStackTrace();
+            logger.info("Hue API exception: " + e.toString());
         }
         return new HueResult(res);
     }
@@ -47,7 +50,7 @@ public class HueController {
         try {
             return hueService.getLights();
         } catch (HueApiException e) {
-            e.printStackTrace();
+            logger.info("Hue API exception: " + e.toString());
         }
         return new LightInfo(new ArrayList<>());
     }
