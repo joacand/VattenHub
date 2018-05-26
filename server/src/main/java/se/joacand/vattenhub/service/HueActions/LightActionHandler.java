@@ -4,19 +4,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
+// TODO: Not optimized for a distributed environment
 @Component
 public class LightActionHandler implements ILightActionHandler {
 
-    private List<String> lightActions = new ArrayList<String>();
+    private final List<String> lightActions = new ArrayList<>();
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final ILightActionFactory lightActionFactory;
-    private LightActionEnum lastStartedAction = LightActionEnum.Off;
+    private final Map<Integer, LightActionEnum> startedActions;
 
     public LightActionHandler(ILightActionFactory lightActionFactory) {
         this.lightActionFactory = lightActionFactory;
+        startedActions = Collections.synchronizedMap(new HashMap<>());
 
         for (LightActionEnum lightAction : LightActionEnum.values()) {
             lightActions.add(lightAction.toString());
@@ -30,15 +31,32 @@ public class LightActionHandler implements ILightActionHandler {
 
     @Override
     public void startLightAction(LightActionEnum lightActionEnum, int[] lights) {
-        cancelLightAction(lastStartedAction);
+        logger.info("Starting action " + lightActionEnum);
+        cancelAllAffectedLights(lights);
 
         ILightAction lightAction = lightActionFactory.GetAction(lightActionEnum);
         lightAction.execute(lights);
-        lastStartedAction = lightActionEnum;
+
+        AddStartedLights(lights, lightActionEnum);
+    }
+
+    private void cancelAllAffectedLights(int[] lights) {
+        for (int light : lights) {
+            if (startedActions.containsKey(light)) {
+                cancelLightAction(startedActions.get(light));
+            }
+        }
+    }
+
+    private void AddStartedLights(int[] lights, LightActionEnum lightActionEnum) {
+        for (int light : lights) {
+            startedActions.put(light, lightActionEnum);
+        }
     }
 
     @Override
     public void cancelLightAction(LightActionEnum lightActionEnum) {
+        logger.info("Cancelling action " + lightActionEnum);
         ILightAction lightAction = lightActionFactory.GetAction(lightActionEnum);
         lightAction.cancel();
     }

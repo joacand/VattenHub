@@ -6,10 +6,12 @@ import se.joacand.vattenhub.domain.LightAction;
 import se.joacand.vattenhub.domain.LightInfo;
 import se.joacand.vattenhub.domain.LightState;
 import se.joacand.vattenhub.domain.hue.HuePreset;
+import se.joacand.vattenhub.service.HueApiException;
 import se.joacand.vattenhub.service.IHueActionService;
 import se.joacand.vattenhub.service.IHuePresetService;
 import se.joacand.vattenhub.service.IHueService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,14 +32,24 @@ public class HueController {
     @CrossOrigin(origins = "*")
     @RequestMapping(value = apiver + "lights", method = RequestMethod.POST)
     public HueResult lights(@RequestBody LightState input) {
-        boolean res = hueService.changeState(input);
+        boolean res = false;
+        try {
+            res = hueService.changeState(input);
+        } catch (HueApiException e) {
+            e.printStackTrace();
+        }
         return new HueResult(res);
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = apiver + "lights", method = RequestMethod.GET)
     public LightInfo lights() {
-        return hueService.getLights();
+        try {
+            return hueService.getLights();
+        } catch (HueApiException e) {
+            e.printStackTrace();
+        }
+        return new LightInfo(new ArrayList<>());
     }
 
     @CrossOrigin(origins = "*")

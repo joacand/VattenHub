@@ -2,6 +2,8 @@ package se.joacand.vattenhub.service.HueActions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import se.joacand.vattenhub.service.HueApiException;
 import se.joacand.vattenhub.service.IHueService;
 
 import java.util.HashMap;
@@ -65,10 +67,13 @@ public class TimeAction extends BaseAction implements ILightAction {
                 jsonVals.put("hue", hue);
                 jsonVals.put("sat", sat);
                 logger.info("Setting hue: " + hue);
-                this.hueService.sendRaw(jsonVals, lights);
+                    this.hueService.sendRaw(jsonVals, lights);
+     
                 Thread.sleep(timeBetween);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }catch (HueApiException e) {
+                logger.info("Exception during hue request " + e.toString());
             }
         }
     }

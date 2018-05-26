@@ -6,12 +6,12 @@ import se.joacand.vattenhub.domain.LightState;
 import java.util.HashMap;
 
 public interface IHueService {
-    boolean changeState(LightState lightState);
+    boolean changeState(LightState lightState) throws HueApiException;
 
-    LightInfo getLights();
+    LightInfo getLights() throws HueApiException;
 
     boolean registerAccount();
 
-    boolean sendRaw(HashMap<String, Object> jsonVals, int[] lights);
+    boolean sendRaw(HashMap<String, Object> jsonVals, int[] lights) throws HueApiException;
 
 }

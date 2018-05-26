@@ -118,7 +118,11 @@ public class HuePresetService implements IHuePresetService {
             jsonVals.put(option.getKey(), option.getValue());
         }
 
-        this.hueService.sendRaw(jsonVals, lights);
+        try {
+            this.hueService.sendRaw(jsonVals, lights);
+        } catch (HueApiException e) {
+            logger.info("Exception during hue request " + e.toString());
+        }
         logger.warn("Sent to hue service: " + preset.getName());
     }
 }

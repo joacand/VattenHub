@@ -2,6 +2,7 @@ package se.joacand.vattenhub.service.HueActions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.joacand.vattenhub.service.HueApiException;
 import se.joacand.vattenhub.service.IHueService;
 
 import java.util.HashMap;
@@ -67,7 +68,11 @@ public class DiscoAction extends BaseAction implements ILightAction {
                 jsonVals.put("hue", hue);
                 jsonVals.put("sat", sat);
                 logger.info("Setting hue to " + hue);
-                this.hueService.sendRaw(jsonVals, new int[]{light});
+                try {
+                    this.hueService.sendRaw(jsonVals, new int[]{light});
+                } catch (HueApiException e) {
+                    logger.info("Exception during hue request " + e.toString());
+                }
             }
             try {
                 Thread.sleep(timeBetween);

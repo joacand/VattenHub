@@ -10,6 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import se.joacand.vattenhub.dataaccess.IConfigRepository;
 import se.joacand.vattenhub.domain.Config;
@@ -67,8 +68,9 @@ public class HueService implements IHueService {
     }
 
     @Override
-    public boolean changeState(LightState lightState) {
+    public boolean changeState(LightState lightState) throws HueApiException {
         logger.info("changeState called");
+        checkForAuthentication();
 
         int[] lights = lightState.getLights();
 
@@ -82,7 +84,8 @@ public class HueService implements IHueService {
     }
 
     @Override
-    public boolean sendRaw(HashMap<String, Object> jsonVals, int[] lights) {
+    public boolean sendRaw(HashMap<String, Object> jsonVals, int[] lights) throws HueApiException {
+        checkForAuthentication();
         for (int light : lights) {
             logger.info("sendRaw called for light " + light);
 
@@ -131,13 +134,14 @@ public class HueService implements IHueService {
     }
 
     @Override
-    public LightInfo getLights() {
+    public LightInfo getLights() throws HueApiException {
         logger.info("getLights called");
+        checkForAuthentication();
 
         String url = hueRestUrl + user + "/lights";
 
         ResponseEntity<Map<String, Light>> lightsResponse = restTemplate.exchange(url, HttpMethod.GET, null,
-                new ParameterizedTypeReference<Map<String, Light>>() {
+                new ParameterizedTypeReference<>() {
                 });
 
         Map<String, Light> lights = lightsResponse.getBody();
@@ -145,6 +149,18 @@ public class HueService implements IHueService {
         List<String> lightIds = new ArrayList<>(lights.keySet());
 
         return new LightInfo(lightIds);
+    }
+
+    private void checkForAuthentication() throws HueApiException {
+        if (!isAuthenticated()) {
+            throw new HueApiException("Authentication required");
+        }
+    }
+
+    // Only takes empty/new database into account
+    // TODO: Take situations like when the users are cleared from the Hue bridge into account
+    private boolean isAuthenticated() {
+        return StringUtils.hasText(user);
     }
 
 }
