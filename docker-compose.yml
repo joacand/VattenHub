@@ -1,11 +1,13 @@
 version: '3'
 services:
         frontend:
-                image: vattenhub_client:latest
+                build:
+                        context: ./client/portal-app
                 ports:
                  - '4200:4200'
         backend:
-                image: vattenhub_server:latest
+                build:
+                        context: ./server
                 ports: 
                  - "8080:8080"
                 depends_on:
